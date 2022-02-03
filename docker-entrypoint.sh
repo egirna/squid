@@ -37,6 +37,7 @@ clear_certs_db
 cat /etc/squid/squid.conf
 
 chown -R squid:squid /var/log/squid/
+
 # chmod 644 /var/log/squid/
 
 if [[ -z ${1} ]]; then
@@ -46,14 +47,13 @@ if [[ -z ${1} ]]; then
 #   fi
   
   echo "Starting squid..."
-  $(which squid) -z
   exec tail -f /var/log/squid/access.log
 
     
 #   exec squid -v
 #   exec cat /etc/squid/squid.conf
-#   exec $(which squid) -f /etc/squid/squid.conf 
-#   exec $(which squid) -f /etc/squid/squid.conf -NYCd 1 ${EXTRA_ARGS}
+  # exec $(which squid) -f /etc/squid/squid.conf 
+  exec $(which squid) -f /etc/squid/squid.conf -NYCd 1 ${EXTRA_ARGS}
 
 else
   exec "$@"

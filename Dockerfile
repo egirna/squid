@@ -1,4 +1,5 @@
-FROM alpine:3.12
+ARG ALP_IMG=alpine:3.12
+FROM ${ALP_IMG}
 
 RUN set -xe \
     && apk --no-cache add alpine-conf openssl ca-certificates curl \
@@ -19,4 +20,4 @@ RUN chmod +x /docker-entrypoint.sh
 VOLUME /etc/squid/
 
 
-ENTRYPOINT ["sh","/docker-entrypoint.sh"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
