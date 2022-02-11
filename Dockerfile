@@ -1,6 +1,7 @@
-# ARG ALP_IMG=alpine:3.12
 FROM alpine
-# ENV ICAP
+
+ENV SOURCE_URL=
+ENV ENABLE_ICAP=--enable-icap-client
 
 # RUN set -xe \
 #     && apk --no-cache add alpine-conf openssl ca-certificates curl \
@@ -15,7 +16,7 @@ RUN set -xe \
     && cd squid-4.17 \
     && ./configure --prefix=/usr --datadir=/usr/share/squid \
     --sysconfdir=/etc/squid --libexecdir=/usr/lib/squid --localstatedir=/var --with-logdir=/var/log/squid --disable-strict-error-checking \ 
-    --enable-icap-client --enable-ssl --with-openssl --enable-ssl-crtd --enable-auth --enable-basic-auth-helpers="NCSA" \
+    ${ENABLE_ICAP} --enable-ssl --with-openssl --enable-ssl-crtd --enable-auth --enable-basic-auth-helpers="NCSA" \
     && make \
     && make install \
     && mkdir -p /etc/squid/cert \

@@ -1,8 +1,18 @@
 #!/bin/ash
 
+. env.list
 # from sameersbn/docker-squid
 set -xe
 
+configure_squid4(env.list) {
+    wget -O - http://www.squid-cache.org/Versions/v4/squid-4.17.tar.gz | tar zxfv - \
+    && cd squid-4.17 \
+    && ./configure --prefix=/usr --datadir=/usr/share/squid \
+    --sysconfdir=/etc/squid --libexecdir=/usr/lib/squid --localstatedir=/var --with-logdir=/var/log/squid --disable-strict-error-checking --with-default-user=squid \ 
+    ${ENABLE_ICAP} --enable-ssl --with-openssl --enable-ssl-crtd --enable-auth --enable-basic-auth-helpers="NCSA" \
+    && make \
+    && make install \
+}
 
 create_cert() {
     if [ ! -f "/etc/squid/cert/ca_key.pem" ] || [ ! -f "/etc/squid/cert/ca_cert.pem" ]; then
@@ -29,6 +39,7 @@ clear_certs_db() {
 
    fi
 }
+
 
 
 create_cert

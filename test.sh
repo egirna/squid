@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-switch_file=configs_switch
+switch_file=final_configs
 config_file=configs
 enabled_services=()
 enabled_arguments=()
