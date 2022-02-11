@@ -1,10 +1,22 @@
 # squid
 Squid Proxy build scripts
 
+## What is it
+
+
+
+More info on Squid [configuration examples](https://wiki.squid-cache.org/ConfigExamples).
+
 Dockerfile running Squid Proxy (v4.17) & (v5.2) using SSL on an Alpine base image.
 
-## How to use
+http://www.squid-cache.org/Intro/
 
+## Why you'd use it
+
+http://www.squid-cache.org/Intro/why.html
+
+## How to use 
+build image or pull from dockerhub
 **Squid Configuration File** -> `config/squid.conf`
 
 For now the `squid.conf` enables a basic SSL configuration. You can apply changes directly to the squid.conf file & it will be copied to the container.
@@ -17,7 +29,7 @@ The default Squid version is 4.17, but the following commands will help you run 
 
 **Squid4**
 
-`sudo docker build --pull --rm -t squid4:latest "."`
+`sudo docker build --pull --rm -t squid4:latest "." --env-file ./env.list`
 
 **Squid5**
 
