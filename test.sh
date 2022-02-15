@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-switch_file=final_configs
+switch_file=configs_switch
 config_file=configs
 enabled_services=()
 enabled_arguments=()
@@ -38,10 +38,13 @@ done <"$switch_file"
 for i in "${enabled_services[@]}";
 do 
     # echo $i
-    value="$(awk -F' {2,}' -v x="$i" '$1==x{print $3}' configs)" 
+    value="$(awk -F' = ' -v x="$i" '$1==x {print $2}' configs)" 
+
     enabled_arguments+=( $value )
 done
 echo "${enabled_arguments[@]}"
+config_command="./configure --prefix=/usr --datadir=/usr/share/squid --sysconfdir=/etc/squid --libexecdir=/usr/lib/squid --localstatedir=/var --with-logdir=/var/log/squid --disable-strict-error-checking --with-default-user=squid  ${enabled_arguments[@]}"
+echo ${config_command}
 
 }
 
