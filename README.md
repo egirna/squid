@@ -29,11 +29,11 @@ The default Squid version is 4.17, but the following commands will help you run 
 
 **Squid4**
 
-`sudo docker build --pull --rm -t squid4:latest "." --env-file ./env.list`
+`sudo docker build --pull --rm -t squid4:latest "."`
 
 **Squid5**
 
-`sudo docker build --pull --rm -t squid5:latest --build-arg ALP_IMG=alpine "."`
+`sudo docker build --pull --rm -t squid5:latest --build-arg version=5 "."`
 
 Since `-t` refers to tags, `squid4` & `squid5` will be reffered to as `{tag_name}` in the following commands.
 
