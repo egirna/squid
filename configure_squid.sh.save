@@ -2,31 +2,24 @@
 
 set -xe
 
-SSL_ENABLED=false
 
 switch_file=configs_switch
 config_file=configs
 enabled_services=""
 enabled_arguments=""
 
-download_squid(){
-if [ "$1" -eq 4 ]
-then
-     wget -O - http://www.squid-cache.org/Versions/v4/squid-4.17.tar.gz | tar zxfv - \
+download_squid4() {
+    wget -O - http://www.squid-cache.org/Versions/v4/squid-4.17.tar.gz | tar zxfv - \
     && cd squid-4.17
-elif [ "$1" -eq 5 ]
-then
-        wget -O  - http://www.squid-cache.org/Versions/v5/squid-5.4.1.tar.gz |  tar zxfv - \
-        && cd squid-5.4.1
-else
-        printf 'incorect version value %s \n' "$1"
-        exit 1
-fi
- }
+    }
 
-#configure squid with customized flags
+download_squid5(){
+	wget -O  - http://www.squid-cache.org/Versions/v5/squid-5.4.1.tar.gz |  tar zxfv - \
+	&& cd squid-5.4.1
+	}
+
 setup_squid(){
-    $1 \
+    $(configure_squid) \
     && make \
     && make install \
     && echo "installation complete" \
@@ -36,6 +29,7 @@ setup_squid(){
     && touch /var/log/squid/cache.log
     
 }
+
 
 configure_squid(){
 while read -r f1 f2 f3
@@ -53,25 +47,14 @@ do
         fi
 done <"$switch_file" 
 
-
-for i in ${enabled_services};
+for i in "${enabled_services}";
 do 
         value="$(awk -F' = ' -v x="$i" '$1==x {print $2}' configs)"
         enabled_arguments="${enabled_arguments} ${value}"
 done
 
-configure_command="./configure --prefix=/usr --datadir=/usr/share/squid  --sysconfdir=/etc/squid --libexecdir=/usr/lib/squid --localstatedir=/var --with-logdir=/var/log/squid --disable-strict-error-checking ${enabled_arguments} --enable-auth --enable-basic-auth-helpers='NCSA'"
+configure_command="./configure --prefix=/usr --datadir=/usr/share/squid  --sysconfdir=/etc/squid --libexecdir=/usr/lib/squid --localstatedir=/var --with-logdir=/var/log/squid --disable-strict-error-checking --enable-ssl --with-openssl --enable-ssl-crtd --enable-auth --enable-basic-auth-helpers='NCSA' ${enabled_arguments} "
 echo ${configure_command}
-}
-
-is_ssl_enabled(){
-        value="$(awk -F' = ' '$1=="ENABLE_SSL" {print $2}' configs_switch)"
-        if [ $value -eq 0 ]
-        then
-                SSL_ENABLED=false
-        else
-                SSL_ENABLED=true
-        fi
 }
 
 create_cert() {
@@ -100,37 +83,25 @@ clear_certs_db() {
    fi
 }
 
-#specify which configuration file to use
-run_basic_config_file(){
-	squid -f /etc/squid/squid.conf.basic
-}
-
-run_ssl_config_file(){
-        squid -f /etc/squid/squid.conf.ssl
-}
-
 
 main(){
-configure_command=$(configure_squid)
-is_ssl_enabled
+bf19bfa0e41b
+        if [ "$1" -eq 4 ]
+	then
+		download_squid4
+	elif [ "$1" -eq 5 ]
+	then
+		download_squid5
+	else
+		echo $1
+		printf 'incorect version value %s \n' "$1"
+		exit 1
+	fi
 
-#download squid and passing version number to the function
-download_squid "$1"
-
-#configure squid
-setup_squid "$configure_command"
-
-#check if ssl functions(create_cert and clear_certs_db) should be used, and run the config file
-if [ $SSL_ENABLED == false ]
-then
-	run_basic_config_file
-elif [ $SSL_ENABLED = true ]
-then
-	create_cert
-	clear_certs_db
-        run_ssl_config_file
-fi
-
+setup_squid
+create_cert
+clear_certs_db	
 }
 
-main $1
+main
+
