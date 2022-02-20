@@ -40,7 +40,7 @@ Since `-t` refers to tags, `squid4` & `squid5` will be reffered to as `{tag_name
 - **Run Docker container on port forwarding**
 
 
-`sudo docker run --name squid_proxy -it -d -p 5000:3128 {tag_name}`
+`sudo docker run --name squid_proxy -it -d -p {host_port_number}:3128 {tag_name}`
 
 Since `--name` refers to container name, make sure that you don't give the same name to more than 1 container, and that different versions are assigned different ports.
 `squid_proxy` will be refrred to as `{container_name}` in the following commands.
@@ -63,7 +63,7 @@ cd7bb12b2d59   3a61b71fe081   "/docker-entrypoint.…"   About a minute ago   Up
 
 - **Verify Squid is running on your local host**
 
-`curl -I http://localhost:{port_number}`
+`curl -I http://localhost:{host_port_number}`
 
 You should be able to see the following response, including Squid's version.
 
