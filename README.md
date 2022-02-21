@@ -110,4 +110,5 @@ For key information about HTTP transactions [client IP address (or hostname), re
 - **Use config file**
 
 In container's terminal run
+
 `squid -f /etc/squid/configFileName`
