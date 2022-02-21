@@ -107,7 +107,7 @@ For key information about HTTP transactions [client IP address (or hostname), re
 
 `tail -f /var/log/squid/access.log`
 
-- **To use config file***
+- **Use config file**
 
 In container's terminal run
 `squid -f /etc/squid/configFileName`
