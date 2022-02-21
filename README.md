@@ -5,11 +5,11 @@ Squid Proxy build scripts
 
 Dockerfile running Squid Proxy (v4.17) & (v5.4) using SSL on an Alpine base image.
 
-[squid] (http://www.squid-cache.org/Intro/)
+[squid](http://www.squid-cache.org/Intro/)
 
 ## Why you'd use it
 
-[why?] (http://www.squid-cache.org/Intro/why.html)
+[why?](http://www.squid-cache.org/Intro/why.html)
 
 ## How to use
 > Note **If you're using linux, you need to run following commands using sudo**
@@ -21,7 +21,7 @@ For now we have `squid.conf.basic` which has a basic configuration for running s
 and `squid.conf.ssl` which enables a basic SSL configuration.
 You can apply changes directly to any of therse files & it will be copied to the container.
 
-Check more [configuration file examples] (https://wiki.squid-cache.org/ConfigExamples)
+Check more [configuration file examples](https://wiki.squid-cache.org/ConfigExamples)
 
 - **Using external configuration file**
 To use external file, copy it config/ directory in this repository and it will be copied to the container.
