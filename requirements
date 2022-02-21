@@ -1,6 +1,4 @@
-ENABLE_ICAP = 0
-ENABLE_ECAP = 1
-ENABLE_SSL = 1
+ENABLE_ECAP = wget -O - http://www.e-cap.org/archive/libecap-1.0.1.tar.gz  | tar zxfv - && cd libecap-1.0.0 && export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/libecap-1.0.1 &&  ./configure && make && sudo make install &&  cd /
 ENABLE_REMOVAL_POLICIES = 0
 ENABLE_DELAY_POOLS = 0
 ENABLE_CACHE_DIGESTS = 0

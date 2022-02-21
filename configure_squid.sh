@@ -5,7 +5,6 @@ set -xe
 SSL_ENABLED=false
 
 switch_file=configs_switch
-config_file=configs
 enabled_services=""
 enabled_arguments=""
 
@@ -53,6 +52,7 @@ do
         fi
 done <"$switch_file" 
 
+check_requirements "${enabled_services}"
 
 for i in ${enabled_services};
 do 
@@ -60,8 +60,19 @@ do
         enabled_arguments="${enabled_arguments} ${value}"
 done
 
-configure_command="./configure --prefix=/usr --datadir=/usr/share/squid  --sysconfdir=/etc/squid --libexecdir=/usr/lib/squid --localstatedir=/var --with-logdir=/var/log/squid --disable-strict-error-checking ${enabled_arguments} --enable-auth --enable-basic-auth-helpers='NCSA'"
+configure_command="./configure --prefix=/usr --datadir=/usr/share/squid  --sysconfdir=/etc/squid --libexecdir=/usr/lib/squid --localstatedir=/var --with-logdir=/var/log/squid --disable-strict-error-checking ${enabled_arguments}"
 echo ${configure_command}
+}
+
+check_requirements(){
+for i in ${1};
+do
+        req="$(awk -F' = ' -v x=$i '$1==x {print $2}' requirements)"
+	if [ ! -z "$req" ]
+	then
+		$req
+	fi
+done
 }
 
 is_ssl_enabled(){

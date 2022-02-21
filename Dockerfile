@@ -7,7 +7,7 @@ RUN set -xe \
 
 EXPOSE 3128
 
-COPY docker-entrypoint.sh configs configs_switch configure_squid.sh /
+COPY docker-entrypoint.sh configs configs_switch configure_squid.sh requirements /
 ADD config /etc/squid/
 
 RUN chmod +x /docker-entrypoint.sh /configure_squid.sh
