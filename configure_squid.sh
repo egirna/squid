@@ -36,7 +36,7 @@ setup_squid(){
     
 }
 
-configure_squid(){
+find_enabled_services(){
 while read -r f1 f2 f3
 do
         if [ "$f3" -eq 0 ]
@@ -51,10 +51,13 @@ do
             exit 1
         fi
 done <"$switch_file" 
+echo "${enabled_services}"
 
-check_requirements "${enabled_services}"
+}
 
-for i in ${enabled_services};
+
+configure_squid(){
+for i in ${1};
 do 
         value="$(awk -F' = ' -v x="$i" '$1==x {print $2}' configs)"
         enabled_arguments="${enabled_arguments} ${value}"
@@ -65,13 +68,22 @@ echo ${configure_command}
 }
 
 check_requirements(){
+
 for i in ${1};
 do
-        req="$(awk -F' = ' -v x=$i '$1==x {print $2}' requirements)"
-	if [ ! -z "$req" ]
-	then
-		$req
-	fi
+	case "${i}" in
+	"ENABLE_ECAP")
+		wget  http://www.e-cap.org/archive/libecap-1.0.1.tar.gz  \
+		&& tar -zxvf libecap-1.0.1.tar.gz && cd libecap-1.0.1  \
+		&& export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/libecap-1.0.1 &&  ./configure  \
+        	&& make && make install &&  cd /
+	;;
+
+	"ENABLE_ESI")
+		apk add libxml2 libxml2-dev
+	;;
+	esac
+
 done
 }
 
@@ -122,9 +134,10 @@ run_ssl_config_file(){
 
 
 main(){
-configure_command=$(configure_squid)
+services="$(find_enabled_services)"
+check_requirements "${services}"
+configure_command=$(configure_squid "${services}")
 is_ssl_enabled
-
 #download squid and passing version number to the function
 download_squid "$1"
 
@@ -145,3 +158,4 @@ fi
 }
 
 main $1
+
