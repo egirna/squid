@@ -27,7 +27,7 @@ Check more [configuration file examples](https://wiki.squid-cache.org/ConfigExam
 To use external file, copy it config/ directory in this repository and it will be copied to the container.
 
 The default Squid version is 4.17, but the following commands will help you run both versions concurrently on your local host.
-[activate file](# Activate a specific config file)
+[activate file](# Activate-a-specific-config-file)
 
 
 - **Build Docker image**
