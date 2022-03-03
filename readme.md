@@ -21,17 +21,12 @@ http://www.squid-cache.org/Intro/why.html
 --------
 
 ## How to use 
-- prerequisites: install docker
-- define port number and map each placeholder
-- git clone
-- cd, change cert and key size rsa:2048
-- squid4 and squid5 commands
+
 - sudo docker run -e pass_configuration_file [volume vs argument]
-- add screenshots
-- add import to firefox cert 
-- configs_switch  > line 12 
+
 ## todo
 - push image to dockerhub
+- add blog articles
 
 ### 1. Prerequisites
 This setup was tested on Ubuntu.    
