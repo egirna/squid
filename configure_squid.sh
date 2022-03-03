@@ -100,9 +100,9 @@ is_ssl_enabled(){
 create_cert() {
     if [ ! -f "/etc/squid/cert/ca_key.pem" ] || [ ! -f "/etc/squid/cert/ca_cert.pem" ]; then
         echo "Creating certificate..."
-        openssl req -new -newkey rsa:4096 -x509 -days 365 -nodes \
+        openssl req -new -newkey rsa:2048 -x509 -days 365 -nodes \
             -keyout "/etc/squid/cert/ca_key.pem" -out "/etc/squid/cert/ca_cert.pem" \
-            -subj "/C=/ST=Global/L=Global/O=Squid/OU=Squid/CN=squid.local/" -utf8 -nameopt multiline,utf8
+            -subj "/C=EG/ST=Global/L=Global/O=Egirna Technologies/OU=Egirna Technologies/CN=squid.local/" -utf8 -nameopt multiline,utf8
         cat "/etc/squid/cert/ca_cert.pem" "/etc/squid/cert/ca_key.pem" > "/etc/squid/cert/ca_chain.pem"
     else
         echo "Certificate found..."
