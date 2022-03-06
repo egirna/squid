@@ -33,7 +33,7 @@ setup_squid(){
     && mkdir -p /var/cache/squid \
     && touch /var/log/squid/access.log \
     && touch /var/log/squid/cache.log  \
-    && chmod -R 1777 /var/log/squid
+    && chmod -R 1777 /var/log/squid \
     && chown -R squid:squid /var/log/squid/
     
 }
