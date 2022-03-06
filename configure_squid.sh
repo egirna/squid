@@ -127,11 +127,11 @@ clear_certs_db() {
 
 #specify which configuration file to use
 run_basic_config_file(){
-	squid -f /etc/squid/squid.conf.basic
+	cp /etc/squid/squid.conf.basic /etc/squid/squid.conf
 }
 
 run_ssl_config_file(){
-        squid -f /etc/squid/squid.conf.ssl
+    cp /etc/squid/squid.conf.ssl /etc/squid/squid.conf
 }
 
 
@@ -154,10 +154,9 @@ elif [ $SSL_ENABLED = true ]
 then
 	create_cert
 	clear_certs_db
-        run_ssl_config_file
+    run_ssl_config_file
 fi
 
 }
 
 main $1
-
