@@ -1,78 +1,158 @@
-# squid
+# Squid
 Squid Proxy build scripts
+
 
 ## What is it
 
-Dockerfile running Squid Proxy (v4.17) & (v5.4) using SSL on an Alpine base image.
-
-Check [squid website](http://www.squid-cache.org/Intro/)
-
-## [Why you'd use it](http://www.squid-cache.org/Intro/why.html)
-
-## How to use
-> Note **If you're using windows, you need to run following commands without sudo**
-
-build image or pull from dockerhub
-
-**Squid configuration options**
-
-you can find options that's supported with our image in `configs` file
-to use any of these flags,in `configs_switch` assign 1 to the flag name. 
 
 
-**Squid Configuration Files** -> `config/`
+More info on Squid [configuration examples](https://wiki.squid-cache.org/ConfigExamples).
 
-For now we have `squid.conf.basic` which has a basic configuration for running squid.
-and `squid.conf.ssl` which enables a basic SSL configuration.
-You can apply changes directly to any of therse files & it will be copied to the container.
+Dockerfile running Squid Proxy (v4.17) & (v5.2) using SSL on an Alpine base image.
 
-Check more [configuration file examples](https://wiki.squid-cache.org/ConfigExamples)
+http://www.squid-cache.org/Intro/
 
-- **Using external configuration file**
-To use external file, copy it config/ directory in this repository and it will be copied to the container. then you need to [activate this file](#Activate-a-specific-config-file)
+------
+
+## Why you'd use it
+
+http://www.squid-cache.org/Intro/why.html
+
+--------
+
+## How to use 
+
+- sudo docker run -e pass_configuration_file [volume vs argument]
+
+## todo
+- push image to dockerhub
+- add blog articles
+
+### 1. Prerequisites
+This setup was tested on Linux Ubuntu.    
+
+- Install Docker Engine for [Ubuntu](https://docs.docker.com/engine/install/ubuntu/) 
+- Git
+
+### 2. Setup Environment
+
+- Clone the project:
+
+    ```
+    $ git clone https://github.com/egirna/squid.git
+
+    ## git checkout develop  -> staging version
+    ```
+- Change directory & list all files and directories:
+
+    ```
+    cd squid & ls
+    ```
+- Understanding Files & Directories
+
+|File/Directory |How to Use   |
+|---|---|
+|config/   |contains squid configuration files.<br> modify or add `squid.conf` files here   |
+|Dockerfile   |contains Squid default version, system dependencies, entrypoint   |
+|configs   |map squid options to their configuration arguments <br> only modify when adding options <br> You can find the index of all options [here](http://www.squid-cache.org/Versions/v4/cfgman/index_all.html) for Squid4  & [here](http://www.squid-cache.org/Versions/v5/cfgman/index_all.html) for Squid5  |
+|configs_switch | controls which arguments (from `configs`) are run while configuring & compiling Squid <br> set an option to **1** when you want to use it while compiling Squid, **0** otherwise|
+|configure_squid.sh| bash script functions to download & setup squid, check enabled services from `configs_switch`, download their dependent packages, and compile Squid with configuration options from `configs`. <br> if SSL is enabled, then a self-signed certificate is created and the SSL DB is created and cleared. <br> if you'd like to modify certificate details > go to create_cert()|
+|docker-entrypoint.sh| log permissions + keep container running|
 
 
-The default Squid version is 4.17, but the following commands will help you run both versions concurrently on your local host.
+**Note:** Make sure you've modified required files before building the docker image. If not, it'll run it's current default: ICAP + SSL enabled configuration for Squid 4.17.
 
-- **Build Docker image**
+- Understanding placeholders for Docker commands
 
+|Placeholders|Usage|
+|---|---|
+|{version_number}| Default is 4 for Squid4.17, Modify to 5 for Squid5.4|
+|{host_port_number}|port number of host device <br> ports used in this document are `8080` and `8081`|
+|{tag_name}|refers to tags <br> tags used in this document are `squid4` & `squid5`|
+|{container_name}|name assigned to container <br> names used in this document are `squid4_proxy` & `squid5_proxy`|
+{container_id}|you can get the id of a container by running `sudo docker ps -a` <br> container id's used in this document are `d8ddfe0c3670` and `825cc1cdde56`|
+
+### 3. Build & Run Docker Image
+
+- Build Docker image 
+```
+sudo docker build --pull --rm -t {tag_name}:latest --build-arg version={version_number} "."
+```
 **Squid4**
 
-`sudo docker build --pull --rm -t squid4:latest "."`
+```
+sudo docker build --pull --rm -t squid4:latest "."
+```
 
 **Squid5**
 
-`sudo docker build --pull --rm -t squid5:latest --build-arg version=5 "."`
+```
+sudo docker build --pull --rm -t squid5:latest --build-arg version=5 "."
+```
 
-Since `-t` refers to tags, `squid4` & `squid5` will be reffered to as `{tag_name}` in the following commands.
+- Run Docker container on port forwarding
 
-- **Run Docker container on port forwarding**
+```
+sudo docker run --name {container_name} -it -d -p {host_port_number}:3128 {tag_name}
+```
+
+**Squid4**
+
+```
+sudo docker run --name squid4_proxy -it -d -p 8080:3128 squid4
+```
+
+**Squid5**
+
+```
+sudo docker run --name squid5_proxy -it -d -p 8081:3128 squid5
+```
 
 
-`sudo docker run --name squid_proxy -it -d -p {host_port_number}:3128 {tag_name}`
+- Start Squid in container:
 
-Since `--name` refers to container name, make sure that you don't give the same name to more than 1 container, and that different versions are assigned different ports.
-`squid_proxy` will be refrred to as `{container_name}` in the following commands.
+```
+sudo docker exec -d {container_name} squid
+```
 
-- **Run Squid**
+**Squid4**
 
-`sudo docker exec -d {container_name} squid`
+```
+sudo docker exec -d squid4_proxy squid
+```
 
-- **Verify your container is running**
+**Squid5**
 
-`sudo docker ps -a`
+```
+sudo docker exec -d squid5_proxy squid
+```
+
+- Verify your container is running by listing all containers:
+
+```
+sudo docker ps -a
+```
 
 You should be able to see that the status is Up.
 
 ```
-CONTAINER ID   IMAGE          COMMAND                  CREATED              STATUS              PORTS                                       NAMES
-be0a7b18fef9   dsquid         "/docker-entrypoint.…"   22 seconds ago       Up 21 seconds       0.0.0.0:5001->3128/tcp, :::5001->3128/tcp   squid5_proxy
-cd7bb12b2d59   3a61b71fe081   "/docker-entrypoint.…"   About a minute ago   Up About a minute   0.0.0.0:5000->3128/tcp, :::5000->3128/tcp   squid4_proxy
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS                                       NAMES
+825cc1cdde56   squid5    "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes   0.0.0.0:8081->3128/tcp, :::8081->3128/tcp   squid5_proxy
+
+d8ddfe0c3670   squid4    "/docker-entrypoint.…"   3 seconds ago   Up 2 seconds                0.0.0.0:8080->3128/tcp, :::8080->3128/tcp   squid4_proxy
 ```
 
-- **Verify Squid is running on your local host**
+- Verify Squid is running on your local host
 
-`curl -I http://localhost:{host_port_number}`
+```
+curl -I http://localhost:{port_number}
+```
+
+**Squid4**
+
+```
+curl -I http://localhost:8080
+```
 
 You should be able to see the following response, including Squid's version.
 
@@ -81,38 +161,102 @@ You should be able to see the following response, including Squid's version.
 HTTP/1.1 400 Bad Request
 Server: squid/4.17
 Mime-Version: 1.0
-Date: Thu, 03 Feb 2022 14:04:27 GMT
+Date: Thu, 03 Mar 2022 15:11:21 GMT
 Content-Type: text/html;charset=utf-8
 Content-Length: 3509
 X-Squid-Error: ERR_INVALID_URL 0
 Vary: Accept-Language
 Content-Language: en
-X-Cache: MISS from cd7bb12b2d59
-X-Cache-Lookup: NONE from cd7bb12b2d59:3128
-Via: 1.1 cd7bb12b2d59 (squid/4.17)
+X-Cache: MISS from d8ddfe0c3670
+Via: 1.1 d8ddfe0c3670 (squid/4.17)
 Connection: close
 ```
 
-- **Copy cert to import into client browser**
+**Squid5**
 
-`sudo docker cp {container_name}:/etc/squid/cert/ca_cert.der .`
+```
+curl -I http://localhost:8081
+```
 
-In your client browser, go to proxy settings > Manual proxy configuration > add `127.0.0.1` as the HTTP Proxy & port_number used when running the container.
+You should be able to see the following response, including Squid's version.
 
-[x] Also use this proxy for HTTPS.
 
-## Access container's terminal
+```
+HTTP/1.1 400 Bad Request
+Server: squid/5.4.1
+Mime-Version: 1.0
+Date: Thu, 03 Mar 2022 14:40:41 GMT
+Content-Type: text/html;charset=utf-8
+Content-Length: 3510
+X-Squid-Error: ERR_INVALID_URL 0
+Vary: Accept-Language
+Content-Language: en
+X-Cache: MISS from 825cc1cdde56
+Via: 1.1 825cc1cdde56 (squid/5.4.1)
+Connection: close
+```
 
-`sudo docker exec -it {container_id} /bin/ash`
 
-### For debug and error messages generated by Squid: 
+- Using SSL & importing self-signed certificate to client browser
+    - in your host machine, copy the certificate to your current directory
 
-`tail -f /var/log/squid/cache.log`
+    ```
+    sudo docker cp {container_name}:/etc/squid/cert/ca_cert.der .
+    ```
+    **Squid4**
 
-### For key information about HTTP transactions [client IP address (or hostname), requested URI, response size, etc.]:
+    ```
+    sudo docker cp squid4_proxy:/etc/squid/cert/ca_cert.der .
+    ```
 
-`tail -f /var/log/squid/access.log`
+    **Squid5**
 
-### Activate a specific config file
+    ```
+    sudo docker cp squid5_proxy:/etc/squid/cert/ca_cert.der .
+    ```
+    - to import on Firefox:
+        - settings > search for `certificates` > `view certificates` button > you should be able to see the certificates manager > click on `Import`
 
-`squid -f /etc/squid/configFileName`
+        ![image](https://user-images.githubusercontent.com/60857664/156594733-373a8f39-577a-42f5-bda7-f5866aec9285.png)
+
+    
+        - you'll be prompted the following when you choose your certificate > trust to identify websites and email users.
+
+         ![image](https://user-images.githubusercontent.com/60857664/156596368-9f658d95-b617-4d40-8361-0d4bba06f238.png)
+
+        - in settings > search for `proxy` > input manual proxy data & enable for HTTPS
+
+          ![image](https://user-images.githubusercontent.com/60857664/156597131-26d79f12-ab75-448f-8f84-8626aea34192.png)
+
+    
+
+
+- Access container terminal for logs
+
+```
+sudo docker exec -it {container_id} /bin/ash
+```
+
+**Squid4**
+
+```
+sudo docker exec -it d8ddfe0c3670 /bin/ash
+```
+
+ **Squid5**
+
+```
+sudo docker exec -it 825cc1cdde56 /bin/ash
+```
+
+- For debug and error messages generated by Squid: 
+
+```
+tail -f /var/log/squid/cache.log
+```
+
+For key information about HTTP transactions [client IP address (or hostname), requested URI, response size, etc.]:
+
+```
+tail -f /var/log/squid/access.log
+```
