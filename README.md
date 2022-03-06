@@ -228,6 +228,21 @@ Connection: close
           ![image](https://user-images.githubusercontent.com/60857664/156597131-26d79f12-ab75-448f-8f84-8626aea34192.png)
 
     
+- To check certificate data in browser
+    - navigate to an HTTPS based website
+    - click on the lock in the address bar
+
+    ![image](https://user-images.githubusercontent.com/60857664/156928457-b5ae5fd0-2e62-4f46-abbd-6847b682f4da.png)
+
+    - you should be able to see the data for **Verified by:** as **Organization (O) or Organization Unit (OU)** modified in [configure squid script](configure_squid.sh)
+
+
+    ![image](https://user-images.githubusercontent.com/60857664/156928495-23180721-d57a-4356-97a0-805507684a82.png)
+
+    - 'view certificate' should show you the subject name as per [configure squid script](configure_squid.sh)
+
+
+    ![image](https://user-images.githubusercontent.com/60857664/156928637-18503927-7449-47e7-8676-39f5f8562458.png)
 
 
 - Access container terminal for logs
