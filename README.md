@@ -22,7 +22,6 @@ http://www.squid-cache.org/Intro/why.html
 
 ## How to use 
 
-- sudo docker run -e pass_configuration_file [volume vs argument]
 
 ## todo
 - push image to dockerhub
