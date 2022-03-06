@@ -239,7 +239,7 @@ Connection: close
 
     ![image](https://user-images.githubusercontent.com/60857664/156928495-23180721-d57a-4356-97a0-805507684a82.png)
 
-    - 'view certificate' should show you the subject name as per [configure squid script](configure_squid.sh)
+    - `view certificate` should show you the subject name as per [configure squid script](configure_squid.sh)
 
 
     ![image](https://user-images.githubusercontent.com/60857664/156928637-18503927-7449-47e7-8676-39f5f8562458.png)
