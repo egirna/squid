@@ -29,8 +29,9 @@ http://www.squid-cache.org/Intro/why.html
 - add blog articles
 
 ### 1. Prerequisites
-This setup was tested on Ubuntu.    
-- Install Docker Engine for [Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+This setup was tested on Linux Ubuntu.    
+
+- Install Docker Engine for [Ubuntu](https://docs.docker.com/engine/install/ubuntu/) 
 - Git
 
 ### 2. Setup Environment
@@ -69,7 +70,7 @@ This setup was tested on Ubuntu.
 |{host_port_number}|port number of host device <br> ports used in this document are `8080` and `8081`|
 |{tag_name}|refers to tags <br> tags used in this document are `squid4` & `squid5`|
 |{container_name}|name assigned to container <br> names used in this document are `squid4_proxy` & `squid5_proxy`|
-{container_id}|you can get the id of a container by running `sudo docker ps -a`|
+{container_id}|you can get the id of a container by running `sudo docker ps -a` <br> container id's used in this document are `d8ddfe0c3670` and `825cc1cdde56`|
 
 ### 3. Build & Run Docker Image
 
