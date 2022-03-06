@@ -274,3 +274,52 @@ For key information about HTTP transactions [client IP address (or hostname), re
 ```
 tail -f /var/log/squid/access.log
 ```
+
+- Run squid with different `squid.conf`
+    - if you've created the file inside the docker image, using `vi` editor, then run:
+
+    ```
+    squid -f /path/to/newsquid
+    ```
+
+    - if you've modified `squid.conf` inside the docker image, using `vi` editor, then run:
+
+    ```
+    squid -k reconfigure
+    ```
+
+    - if you've modified a `squid.conf.` file in the repository folder `configs`, after build the docker image, then run:
+
+    ```
+    sudo docker cp foo.txt container_id:/foo.txt
+    ```
+
+    **Squid4**
+
+    ```
+    sudo docker cp config/squid.conf d8ddfe0c3670:/etc/squid/squid.conf
+    ```
+
+    **Squid5**
+
+    ```
+    sudo docker cp config/squid.conf 825cc1cdde56:/etc/squid/squid.conf
+    ```
+
+    - reconfigure `squid` 
+    
+    ```
+    sudo docker exec -d {container_name} squid -k reconfigure
+    ```
+
+    **Squid4**
+
+    ```
+    sudo docker exec -d squid4_proxy squid -k reconfigure
+    ```
+
+    **Squid5**
+
+    ```
+    sudo docker exec -d squid5_proxy squid -k reconfigure
+    ```
