@@ -138,7 +138,7 @@ You should be able to see that the status is Up.
 CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS                                       NAMES
 825cc1cdde56   squid5    "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes   0.0.0.0:8081->3128/tcp, :::8081->3128/tcp   squid5_proxy
 
-d8ddfe0c3670   squid4    "/docker-entrypoint.…"   3 seconds ago   Up 2 seconds                0.0.0.0:8080->3128/tcp, :::8080->3128/tcp   squid4_proxy
+d8ddfe0c3670   squid4    "/docker-entrypoint.…"   3 seconds ago   Up 2 seconds   0.0.0.0:8080->3128/tcp, :::8080->3128/tcp   squid4_proxy
 ```
 
 - Verify Squid is running on your local host
