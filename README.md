@@ -26,6 +26,7 @@ http://www.squid-cache.org/Intro/why.html
 ## todo
 - push image to dockerhub
 - add blog articles
+- demo video
 
 ### 1. Prerequisites
 This setup was tested on Linux Ubuntu.    
