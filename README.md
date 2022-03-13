@@ -324,3 +324,15 @@ tail -f /var/log/squid/access.log
     ```
     sudo docker exec -d squid5_proxy squid -k reconfigure
     ```
+## Demo Video 
+
+
+https://user-images.githubusercontent.com/60857664/158066762-8f3c61dd-d406-406c-8366-609e3c934a32.mp4
+
+
+
+## Squid Articles
+
+- [Allowing & Blocking Websites with Squid](https://www.egirna.com/post/allowing-blocking-websites-using-squid)
+- [Basic Authentication with Squid](https://www.egirna.com/post/setting-up-squid-as-forward-proxy-with-basic-authentication)
+- [ICAP + SSL Squid Setup](https://www.egirna.com/post/configure-squid-4-17-with-icap-ssl)
