@@ -47,24 +47,26 @@ This setup was tested on Linux Ubuntu.
 |{tag_name}|refers to tags <br> tags used in this document are `squid4` & `squid5`|
 |{container_name}|name assigned to container <br> names used in this document are `squid4_proxy` & `squid5_proxy`|
 {container_id}|you can get the id of a container by running `sudo docker ps -a` <br> container id's used in this document are `d8ddfe0c3670` and `825cc1cdde56`|
-
+------
 ### 2. Setup Environment
 
 ### 2.1. Manual Build
-    - Clone the project:
 
-        ```
-        $ git clone https://github.com/egirna/squid.git
-        ```
-    - Change directory & list all files and directories:
+- Clone the project:
 
-        ```
-        cd squid & ls
-        ## git checkout develop  -> staging version
+    ```
+    $ git clone https://github.com/egirna/squid.git
+    ```
 
-        ```
+- Change directory & list all files and directories:
 
-    - Build Docker image 
+    ```
+    cd squid & ls
+    ## git checkout develop  -> staging version
+
+    ```
+
+- Build Docker image 
     ```
     sudo docker build --pull --rm -t {tag_name}:latest --build-arg version={version_number} "."
     ```
@@ -80,7 +82,7 @@ This setup was tested on Linux Ubuntu.
     sudo docker build --pull --rm -t squid5:latest --build-arg version=5 "."
     ```
 ### 2.2 Dockerhub
-    - Pull Docker Images
+- Pull Docker Images
     ```
     sudo docker pull shereenfarag/alpine-squid-proxy:{tag_name}
     ```
@@ -99,46 +101,46 @@ This setup was tested on Linux Ubuntu.
 
 - Run Docker container on port forwarding
 
-```
-sudo docker run --name {container_name} -it -d -p {host_port_number}:3128 {tag_name}
-```
+    ```
+    sudo docker run --name {container_name} -it -d -p {host_port_number}:3128 {tag_name}
+    ```
 
-**Squid4**
+    **Squid4**
 
-```
-sudo docker run --name squid4_proxy -it -d -p 8080:3128 squid4
-```
+    ```
+    sudo docker run --name squid4_proxy -it -d -p 8080:3128 squid4
+    ```
 
-**Squid5**
+    **Squid5**
 
-```
-sudo docker run --name squid5_proxy -it -d -p 8081:3128 squid5
-```
+    ```
+    sudo docker run --name squid5_proxy -it -d -p 8081:3128 squid5
+    ```
 
 
 - Start Squid in container:
 
-```
-sudo docker exec -d {container_name} squid
-```
+    ```
+    sudo docker exec -d {container_name} squid
+    ```
 
-**Squid4**
+    **Squid4**
 
-```
-sudo docker exec -d squid4_proxy squid
-```
+    ```
+    sudo docker exec -d squid4_proxy squid
+    ```
 
-**Squid5**
+    **Squid5**
 
-```
-sudo docker exec -d squid5_proxy squid
-```
+    ```
+    sudo docker exec -d squid5_proxy squid
+    ```
 
 - Verify your container is running by listing all containers:
 
-```
-sudo docker ps -a
-```
+    ```
+    sudo docker ps -a
+    ```
 
 You should be able to see that the status is Up.
 
@@ -151,57 +153,57 @@ d8ddfe0c3670   squid4    "/docker-entrypoint.…"   3 seconds ago   Up 2 seconds
 
 - Verify Squid is running on your local host
 
-```
-curl -I http://localhost:{port_number}
-```
+    ```
+    curl -I http://localhost:{port_number}
+    ```
 
-**Squid4**
+    **Squid4**
 
-```
-curl -I http://localhost:8080
-```
+    ```
+    curl -I http://localhost:8080
+    ```
 
-You should be able to see the following response, including Squid's version.
-
-
-```
-HTTP/1.1 400 Bad Request
-Server: squid/4.17
-Mime-Version: 1.0
-Date: Thu, 03 Mar 2022 15:11:21 GMT
-Content-Type: text/html;charset=utf-8
-Content-Length: 3509
-X-Squid-Error: ERR_INVALID_URL 0
-Vary: Accept-Language
-Content-Language: en
-X-Cache: MISS from d8ddfe0c3670
-Via: 1.1 d8ddfe0c3670 (squid/4.17)
-Connection: close
-```
-
-**Squid5**
-
-```
-curl -I http://localhost:8081
-```
-
-You should be able to see the following response, including Squid's version.
+    You should be able to see the following response, including Squid's version.
 
 
-```
-HTTP/1.1 400 Bad Request
-Server: squid/5.4.1
-Mime-Version: 1.0
-Date: Thu, 03 Mar 2022 14:40:41 GMT
-Content-Type: text/html;charset=utf-8
-Content-Length: 3510
-X-Squid-Error: ERR_INVALID_URL 0
-Vary: Accept-Language
-Content-Language: en
-X-Cache: MISS from 825cc1cdde56
-Via: 1.1 825cc1cdde56 (squid/5.4.1)
-Connection: close
-```
+    ```
+    HTTP/1.1 400 Bad Request
+    Server: squid/4.17
+    Mime-Version: 1.0
+    Date: Thu, 03 Mar 2022 15:11:21 GMT
+    Content-Type: text/html;charset=utf-8
+    Content-Length: 3509
+    X-Squid-Error: ERR_INVALID_URL 0
+    Vary: Accept-Language
+    Content-Language: en
+    X-Cache: MISS from d8ddfe0c3670
+    Via: 1.1 d8ddfe0c3670 (squid/4.17)
+    Connection: close
+    ```
+
+    **Squid5**
+
+    ```
+    curl -I http://localhost:8081
+    ```
+
+    You should be able to see the following response, including Squid's version.
+
+
+    ```
+    HTTP/1.1 400 Bad Request
+    Server: squid/5.4.1
+    Mime-Version: 1.0
+    Date: Thu, 03 Mar 2022 14:40:41 GMT
+    Content-Type: text/html;charset=utf-8
+    Content-Length: 3510
+    X-Squid-Error: ERR_INVALID_URL 0
+    Vary: Accept-Language
+    Content-Language: en
+    X-Cache: MISS from 825cc1cdde56
+    Via: 1.1 825cc1cdde56 (squid/5.4.1)
+    Connection: close
+    ```
 
 
 - Using SSL & importing self-signed certificate to client browser
@@ -314,7 +316,7 @@ tail -f /var/log/squid/access.log
     sudo docker cp config/squid.conf 825cc1cdde56:/etc/squid/squid.conf
     ```
 
-    - reconfigure `squid` 
+- reconfigure `squid` 
     
     ```
     sudo docker exec -d {container_name} squid -k reconfigure
