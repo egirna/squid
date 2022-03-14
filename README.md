@@ -4,10 +4,6 @@ Squid Proxy build scripts
 
 ## What is it
 
-
-
-More info on Squid [configuration examples](https://wiki.squid-cache.org/ConfigExamples).
-
 Dockerfile running Squid Proxy (v4.17) & (v5.2) using SSL on an Alpine base image.
 
 http://www.squid-cache.org/Intro/
@@ -23,36 +19,16 @@ http://www.squid-cache.org/Intro/why.html
 ## How to use 
 
 
-## todo
-- push image to dockerhub
-- add blog articles
-- demo video
-
 ### 1. Prerequisites
 This setup was tested on Linux Ubuntu.    
 
 - Install Docker Engine for [Ubuntu](https://docs.docker.com/engine/install/ubuntu/) 
 - Git
-
-### 2. Setup Environment
-
-- Clone the project:
-
-    ```
-    $ git clone https://github.com/egirna/squid.git
-
-    ## git checkout develop  -> staging version
-    ```
-- Change directory & list all files and directories:
-
-    ```
-    cd squid & ls
-    ```
 - Understanding Files & Directories
 
 |File/Directory |How to Use   |
 |---|---|
-|config/   |contains squid configuration files.<br> modify or add `squid.conf` files here   |
+|config/   |contains squid configuration files.<br> modify or add `squid.conf` files here  <br>More info on Squid [configuration examples](https://wiki.squid-cache.org/ConfigExamples). |
 |Dockerfile   |contains Squid default version, system dependencies, entrypoint   |
 |configs   |map squid options to their configuration arguments <br> only modify when adding options <br> You can find the index of all options [here](http://www.squid-cache.org/Versions/v4/cfgman/index_all.html) for Squid4  & [here](http://www.squid-cache.org/Versions/v5/cfgman/index_all.html) for Squid5  |
 |configs_switch | controls which arguments (from `configs`) are run while configuring & compiling Squid <br> set an option to **1** when you want to use it while compiling Squid, **0** otherwise|
@@ -60,7 +36,7 @@ This setup was tested on Linux Ubuntu.
 |docker-entrypoint.sh| log permissions + keep container running|
 
 
-**Note:** Make sure you've modified required files before building the docker image. If not, it'll run it's current default: ICAP + SSL enabled configuration for Squid 4.17.
+**Note:** Make sure you've modified required files before building the docker image. If not, it'll run it's current default: ICAP + SSL enabled configuration for Squid 4.17. You'll still need to modify `squid.conf` according to your needs. Check our [articles below](#squid-articles) for setups and squid configuration files.
 
 - Understanding placeholders for Docker commands
 
@@ -72,23 +48,54 @@ This setup was tested on Linux Ubuntu.
 |{container_name}|name assigned to container <br> names used in this document are `squid4_proxy` & `squid5_proxy`|
 {container_id}|you can get the id of a container by running `sudo docker ps -a` <br> container id's used in this document are `d8ddfe0c3670` and `825cc1cdde56`|
 
-### 3. Build & Run Docker Image
+### 2. Setup Environment
 
-- Build Docker image 
-```
-sudo docker build --pull --rm -t {tag_name}:latest --build-arg version={version_number} "."
-```
-**Squid4**
+### 2.1. Manual Build
+    - Clone the project:
 
-```
-sudo docker build --pull --rm -t squid4:latest "."
-```
+        ```
+        $ git clone https://github.com/egirna/squid.git
+        ```
+    - Change directory & list all files and directories:
 
-**Squid5**
+        ```
+        cd squid & ls
+        ## git checkout develop  -> staging version
 
-```
-sudo docker build --pull --rm -t squid5:latest --build-arg version=5 "."
-```
+        ```
+
+    - Build Docker image 
+    ```
+    sudo docker build --pull --rm -t {tag_name}:latest --build-arg version={version_number} "."
+    ```
+    **Squid4**
+
+    ```
+    sudo docker build --pull --rm -t squid4:latest "."
+    ```
+
+    **Squid5**
+
+    ```
+    sudo docker build --pull --rm -t squid5:latest --build-arg version=5 "."
+    ```
+### 2.2 Dockerhub
+    - Pull Docker Images
+    ```
+    sudo docker pull shereenfarag/alpine-squid-proxy:{tag_name}
+    ```
+    **Squid4**
+
+    ```
+    sudo docker pull shereenfarag/alpine-squid-proxy:squid4
+    ```
+
+    **Squid5**
+
+    ```
+    sudo docker pull shereenfarag/alpine-squid-proxy:squid5
+    ```
+### 3. Run Squid Container
 
 - Run Docker container on port forwarding
 
@@ -335,4 +342,9 @@ https://user-images.githubusercontent.com/60857664/158066762-8f3c61dd-d406-406c-
 
 - [Allowing & Blocking Websites with Squid](https://www.egirna.com/post/allowing-blocking-websites-using-squid)
 - [Basic Authentication with Squid](https://www.egirna.com/post/setting-up-squid-as-forward-proxy-with-basic-authentication)
-- [ICAP + SSL Squid Setup](https://www.egirna.com/post/configure-squid-4-17-with-icap-ssl)
+- [ICAP + SSL Squid v4.17 Setup](https://www.egirna.com/post/configure-squid-4-17-with-icap-ssl)
+- [ICAP + SSL Squid v5 Setup](https://www.egirna.com/post/how-to-configure-squid-proxy-with-icap)
+
+
+## todo
+- pipeline: build & push image to dockerhub
