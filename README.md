@@ -335,9 +335,7 @@ tail -f /var/log/squid/access.log
     ```
 ## Demo Video 
 
-
-https://user-images.githubusercontent.com/60857664/158066762-8f3c61dd-d406-406c-8366-609e3c934a32.mp4
-
+[![squid](https://img.youtube.com/vi/Xdzcgm3Gqtw/0.jpg)]({https://www.youtube.com/Xdzcgm3Gqtw} "Demo Squid Proxy")
 
 
 ## Squid Articles
