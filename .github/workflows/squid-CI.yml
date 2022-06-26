@@ -1,0 +1,27 @@
+name: Squid proxy CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: sudo docker build --pull --rm -t squid5:latest --build-arg version=5 "."
+    - name: Run Squid container
+      run: |
+        sudo docker run --name squid5_proxy -it -d -p 8081:3128 squid5
+        sudo docker exec -d squid5_proxy squid
+    - name: Testing squid
+      run: |
+        sudo chmod +x ./testing/test.sh
+        ./testing/test.sh
+        
