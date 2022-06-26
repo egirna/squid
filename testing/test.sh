@@ -21,7 +21,7 @@ Failed=0
 
 
 
-curl -s -I http://localhost:8081 > /dev/null
+curl -s -I http://localhost:8081
 Test if proxy working
 if  curl -s -I http://localhost:8081 > /dev/null;
 then 
