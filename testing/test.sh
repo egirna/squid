@@ -21,15 +21,15 @@ Failed=0
 
 
 
-
-# Test if proxy working
-# if  curl -s -I http://localhost:8081 > /dev/null;
-# then 
-# printf "\033[1;32m ✔ Proxy Is Working\n\033[0m"
-# else 
-# printf "\033[1;31m ✘ Proxy is not working\n\033[0m" 
-# exit 7
-# fi
+curl -s -I http://localhost:8081 > /dev/null
+Test if proxy working
+if  curl -s -I http://localhost:8081 > /dev/null;
+then 
+printf "\033[1;32m ✔ Proxy Is Working\n\033[0m"
+else 
+printf "\033[1;31m ✘ Proxy is not working\n\033[0m" 
+exit 7
+fi
 
 # Test URLs from CSV file 
 while read line
