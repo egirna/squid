@@ -26,6 +26,8 @@ jobs:
         sudo docker exec -d squid5_proxy squid
     - name: run docker ps 
       run: sudo docker ps
+    - name: test the proxy
+      run: curl -I http://localhost:8081
     - name: Testing squid
       run: |
         sudo chmod +x ./testing/test.sh
