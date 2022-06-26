@@ -22,7 +22,7 @@ Failed=0
 
 
 curl -s -I http://localhost:8081
-Test if proxy working
+#Test if proxy working
 if  curl -s -I http://localhost:8081 > /dev/null;
 then 
 printf "\033[1;32m ✔ Proxy Is Working\n\033[0m"
