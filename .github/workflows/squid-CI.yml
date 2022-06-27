@@ -22,7 +22,7 @@ jobs:
 #       run: sudo docker ps
     - name: Run Squid container
       run: |
-        sudo docker run --name squid5_proxy -it -p -d 8081:3128 squid5
+        sudo docker run --name squid5_proxy -it -d -p 8081:3128 squid5
         sudo docker exec -d squid5_proxy squid
 #     - name: run docker ps 
 #       run: sudo docker ps
