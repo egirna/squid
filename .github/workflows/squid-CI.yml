@@ -16,22 +16,23 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: sudo docker build --pull --rm -t squid5:latest --build-arg version=5 "."
-    - name: run docker images
-      run: sudo docker images
-    - name: run docker ps 
-      run: sudo docker ps
+#     - name: run docker images
+#       run: sudo docker images
+#     - name: run docker ps 
+#       run: sudo docker ps
     - name: Run Squid container
       run: |
         sudo docker run --name squid5_proxy -it -d -p 8081:3128 squid5
         sudo docker exec -d squid5_proxy squid
     - name: run docker ps 
       run: sudo docker ps
-    - name: test the proxy
-      run: |
-        sleep 60
-        curl -I http://localhost:8081
+#     - name: test the proxy
+#       run: |
+#         sleep 60
+#         curl -I http://localhost:8081
     - name: Testing squid
       run: |
+        sleep 60
         sudo chmod +x ./testing/test.sh
         ./testing/test.sh
         
