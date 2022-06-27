@@ -32,7 +32,7 @@ jobs:
 #         curl -I http://localhost:8081
     - name: Testing squid
       run: |
-        sleep 40
+        sleep 50
         sudo chmod +x ./testing/test.sh
         ./testing/test.sh
         
