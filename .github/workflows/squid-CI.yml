@@ -27,7 +27,9 @@ jobs:
     - name: run docker ps 
       run: sudo docker ps
     - name: test the proxy
-      run: curl -I http://localhost:8081
+      run: |
+        sleep 60
+        curl -I http://localhost:8081
     - name: Testing squid
       run: |
         sudo chmod +x ./testing/test.sh
