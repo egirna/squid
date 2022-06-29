@@ -6,16 +6,19 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env: 
+  REPO_NAME: squid
+  DOCKER_USER: ${{secrets.DOCKER_USER}}
+  DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
 jobs:
 
   build:
 
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: sudo docker build --pull --rm -t squid5:latest --build-arg version=5 "."
+      run: sudo docker build --pull --rm -t $DOCKER_USER/$REPO_NAME:latest --build-arg version=5 "."
 #     - name: run docker images
 #       run: sudo docker images
 #     - name: run docker ps 
@@ -35,4 +38,11 @@ jobs:
         sleep 5
         sudo chmod +x ./testing/test.sh
         ./testing/test.sh
+    - name: login to dockerhub
+      run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
+
+    - name: push image to dockerhub
+      run: docker push $DOCKER_USER/$REPO_NAME:latest
+        
+    
         
