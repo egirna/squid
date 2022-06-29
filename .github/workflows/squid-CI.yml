@@ -8,7 +8,7 @@ on:
 
 env: 
   REPO_NAME: squid
-  DOCKER_USER: ${{ secrets.DOCKER_USER }}
+  DOCKER_USER: ${{ secret.DOCKER_USER }}
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 jobs:
 
