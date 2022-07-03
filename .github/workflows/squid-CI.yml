@@ -1,0 +1,48 @@
+name: Squid proxy CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env: 
+  REPO_NAME: squid
+  DOCKER_USER: ${{ secrets.DOCKER_USER }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: sudo docker build --pull --rm -t $DOCKER_USER/$REPO_NAME:latest --build-arg version=5 "."
+#     - name: run docker images
+#       run: sudo docker images
+#     - name: run docker ps 
+#       run: sudo docker ps
+    - name: Run Squid container
+      run: |
+        sudo docker run --name squid5_proxy -it -d -p 8081:3128 $DOCKER_USER/$REPO_NAME:latest
+        sudo docker exec -d squid5_proxy squid
+#     - name: run docker ps 
+#       run: sudo docker ps
+#     - name: test the proxy
+#       run: |
+#         sleep 60
+#         curl -I http://localhost:8081
+    - name: Testing squid
+      run: |
+        sleep 5
+        sudo chmod +x ./testing/test.sh
+        ./testing/test.sh
+    - name: Login to dockerhub
+      run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
+
+    - name: Push image to dockerhub
+      run: docker push $DOCKER_USER/$REPO_NAME:latest
+        
+    
+        
