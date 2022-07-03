@@ -38,10 +38,10 @@ jobs:
         sleep 5
         sudo chmod +x ./testing/test.sh
         ./testing/test.sh
-    - name: login to dockerhub
+    - name: Login to dockerhub
       run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
 
-    - name: push image to dockerhub
+    - name: Push image to dockerhub
       run: docker push $DOCKER_USER/$REPO_NAME:latest
         
     
